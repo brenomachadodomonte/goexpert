@@ -1,1 +1,8 @@
+### Http Request
 GET http://localhost:8080/?cep=64016360
+
+### ServeMux
+GET http://localhost:8080/
+
+###
+GET http://localhost:8080/blog
