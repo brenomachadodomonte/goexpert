@@ -20,6 +20,6 @@ func handler(writer http.ResponseWriter, request *http.Request) {
 		log.Println("Request proccessed")
 		writer.Write([]byte("Request proccessed successfully"))
 	case <-cxt.Done():
-		writer.Write([]byte("Request canceled by client"))
+		log.Println("Request canceled by client")
 	}
 }
