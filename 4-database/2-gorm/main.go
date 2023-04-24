@@ -56,4 +56,6 @@ func main() {
 	var product2 Product
 	db.First(&product2, 1)
 	fmt.Println(product2.Name)
+
+	db.Delete(&product2)
 }
