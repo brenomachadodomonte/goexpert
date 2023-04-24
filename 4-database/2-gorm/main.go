@@ -10,10 +10,11 @@ type Product struct {
 	ID    int `gorm:"primaryKey"`
 	Name  string
 	Price float64
+	gorm.Model
 }
 
 func main() {
-	dns := "root:root@tcp(localhost:3306)/goexpert"
+	dns := "root:root@tcp(localhost:3306)/goexpert?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -48,11 +49,11 @@ func main() {
 	//	fmt.Println(product)
 	//}
 
-	var product Product
-	db.First(&product, 1)
-	product.Name = "Notebook Dell"
-	db.Save(&product)
-
+	//var product Product
+	//db.First(&product, 1)
+	//product.Name = "Notebook Dell"
+	//db.Save(&product)
+	//
 	var product2 Product
 	db.First(&product2, 1)
 	fmt.Println(product2.Name)
