@@ -86,7 +86,7 @@ func QuotationHandler(db *sql.DB, writer http.ResponseWriter, request *http.Requ
 func saveQuotation(db *sql.DB, value float64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 	defer cancel()
-	currentTime := time.Now().Format("2006-01-02 15:04")
+	currentTime := time.Now().Format("2006-01-02 15:04:05.000000")
 	stmt, err := db.Prepare("insert into quotations(value, date) values (?, ?)")
 	if err != nil {
 		return err
