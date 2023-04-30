@@ -1,0 +1,2 @@
+### Request to GET Quotation
+GET http://localhost:8080/cotacao
