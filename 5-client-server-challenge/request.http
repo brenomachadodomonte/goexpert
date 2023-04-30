@@ -1,2 +1,5 @@
-### Request to GET Quotation
+### Request to GET Current Quotation
 GET http://localhost:8080/cotacao
+
+### Request to GET All Quotations
+GET http://localhost:8080/
