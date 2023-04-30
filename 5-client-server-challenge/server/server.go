@@ -107,7 +107,7 @@ func GetQuotationsHandler(db *sql.DB, writer http.ResponseWriter) {
 }
 
 func saveQuotation(db *sql.DB, value float64) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 	defer cancel()
 	currentTime := time.Now().Format("2006-01-02 15:04:05.000000")
 	stmt, err := db.Prepare("insert into quotations(value, date) values (?, ?)")
@@ -158,7 +158,7 @@ func createTable(db *sql.DB) error {
 }
 
 func GetQuotation() (*Quotation, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 600*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
 
 	url := "https://economia.awesomeapi.com.br/json/last/USD-BRL"
