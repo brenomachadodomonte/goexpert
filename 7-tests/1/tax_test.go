@@ -15,7 +15,7 @@ func TestCalculateTax(t *testing.T) {
 }
 
 // test coverage cmd: go test -coverprofile=coverage.out
-// generate html coverage
+// generate html coverage: go tool cover -html=coverage.out
 func TestCalculateTaxBatch(t *testing.T) {
 	type CalcTax struct {
 		amount, expect float64
@@ -34,5 +34,12 @@ func TestCalculateTaxBatch(t *testing.T) {
 		if result != item.expect {
 			t.Errorf("Expected %f but got %f", item.expect, result)
 		}
+	}
+}
+
+// run benchmark: go test -bench=. -run=^# -count=10 -bechtime=3s
+func BenchmarkCalculateTax(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		CalculateTax(500.0)
 	}
 }
