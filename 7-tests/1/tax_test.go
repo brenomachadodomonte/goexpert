@@ -14,12 +14,15 @@ func TestCalculateTax(t *testing.T) {
 	}
 }
 
+// test coverage cmd: go test -coverprofile=coverage.out
+// generate html coverage
 func TestCalculateTaxBatch(t *testing.T) {
 	type CalcTax struct {
 		amount, expect float64
 	}
 
 	table := []CalcTax{
+		{0.0, 0.0},
 		{500.0, 5.0},
 		{1000.0, 10.0},
 		{1500.0, 10.0},
