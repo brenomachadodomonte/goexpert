@@ -3,6 +3,6 @@ POST http://localhost:8000/products
 Content-Type: application/json
 
 {
-  "name": "Notebook",
-  "price": 5499.99
+  "name": "Macbook",
+  "price": 15699.99
 }
