@@ -6,3 +6,7 @@ Content-Type: application/json
   "name": "iPhone",
   "price": 850.00
 }
+
+### GET A PRODUCT
+GET http://localhost:8000/products/95721e47-7a44-4b98-93f6-6d12108dd372
+Content-Type: application/json
