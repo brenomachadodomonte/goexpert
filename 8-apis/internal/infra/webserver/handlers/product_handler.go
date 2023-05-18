@@ -8,6 +8,7 @@ import (
 	entityPkg "github.com/brenomachadodomonte/goexpert/apis/pkg/entity"
 	"github.com/go-chi/chi"
 	"net/http"
+	"strconv"
 )
 
 type ProductHandler struct {
@@ -113,4 +114,30 @@ func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func (h *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+	sort := r.URL.Query().Get("sort")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		page = 0
+	}
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		limit = 0
+	}
+
+	products, err := h.ProductDB.FindAll(page, limit, sort)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(products)
 }
