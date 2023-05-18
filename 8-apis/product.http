@@ -8,15 +8,20 @@ Content-Type: application/json
 }
 
 ### GET A PRODUCT
-GET http://localhost:8000/products/95721e47-7a44-4b98-93f6-6d12108dd372
+GET http://localhost:8000/products/41b1d616-7fea-45c9-a107-cfb8f8c0c031
 Content-Type: application/json
 
 
 ### UPDATE A PRODUCT
-PUT http://localhost:8000/products/95721e47-7a44-4b98-93f6-6d12108dd372
+PUT http://localhost:8000/products/41b1d616-7fea-45c9-a107-cfb8f8c0c031
 Content-Type: application/json
 
 {
-  "name": "Macbook Pro",
-  "price": 14950.0
+  "name": "iPhone",
+  "price": 850.0
 }
+
+### DELETE A PRODUCT
+DELETE http://localhost:8000/products/95721e47-7a44-4b98-93f6-6d12108dd372
+Content-Type: application/json
+
