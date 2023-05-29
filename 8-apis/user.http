@@ -4,6 +4,15 @@ Content-Type: application/json
 
 {
   "name": "Breno",
-  "email": "breno@email.com",
+  "email": "machado@email.com",
+  "password": "123456"
+}
+
+### generate token
+POST http://localhost:8000/users/generate_token
+Content-Type: application/json
+
+{
+  "email": "machado@email.com",
   "password": "123456"
 }
