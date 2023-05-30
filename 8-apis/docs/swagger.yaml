@@ -1,0 +1,21 @@
+basePath: /
+host: localhost:8000
+info:
+  contact:
+    email: brenomachadodomonte@gmail.com
+    name: Breno machado
+    url: https://brenomachado.dev
+  description: Product API with auhtentication
+  license:
+    name: Free License
+    url: https://brenomachado.dev
+  termsOfService: http://swagger.io/terms/
+  title: Go Expert API Example
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
