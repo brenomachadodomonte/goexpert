@@ -11,16 +11,16 @@ import (
 )
 
 type UserHandler struct {
-	UserDB       database.UserDB
-	Jwt          *jwtauth.JWTAuth
-	JwtExpiresIn int
+	UserDB database.UserDB
 }
 
-func NewUserHandler(userDB database.UserDB, jwt *jwtauth.JWTAuth, jwtExpiresIn int) *UserHandler {
-	return &UserHandler{UserDB: userDB, Jwt: jwt, JwtExpiresIn: jwtExpiresIn}
+func NewUserHandler(userDB database.UserDB) *UserHandler {
+	return &UserHandler{UserDB: userDB}
 }
 
 func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
+	jwt := r.Context().Value("jwt").(*jwtauth.JWTAuth)
+	jwtExpiresIn := r.Context().Value("jwtExpiresIn").(int)
 	var user dto.GetJWTInput
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -35,9 +35,9 @@ func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 	}
 	payload := map[string]interface{}{
 		"sub": u.ID.String(),
-		"exp": time.Now().Add(time.Second * time.Duration(h.JwtExpiresIn)).Unix(),
+		"exp": time.Now().Add(time.Second * time.Duration(jwtExpiresIn)).Unix(),
 	}
-	_, token, err := h.Jwt.Encode(payload)
+	_, token, err := jwt.Encode(payload)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

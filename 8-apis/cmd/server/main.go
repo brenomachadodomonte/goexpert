@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/jwtauth"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
 )
 
@@ -27,10 +28,15 @@ func main() {
 	productHandler := handlers.NewProductHandler(productDB)
 
 	userDB := database.UserDB{DB: db}
-	userHandler := handlers.NewUserHandler(userDB, config.TokenAuth, config.JwtExpiresIn)
+	userHandler := handlers.NewUserHandler(userDB)
 
 	r := chi.NewRouter()
+	//r.Use(LogRequest)
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.WithValue("jwt", config.TokenAuth))
+	r.Use(middleware.WithValue("jwtExpiresIn", config.JwtExpiresIn))
+
 	r.Route("/products", func(r chi.Router) {
 		r.Use(jwtauth.Verifier(config.TokenAuth))
 		r.Use(jwtauth.Authenticator)
@@ -45,4 +51,11 @@ func main() {
 	r.Post("/users/generate_token", userHandler.GetJWT)
 
 	http.ListenAndServe(":8000", r)
+}
+
+func LogRequest(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		log.Printf("Method: %s, Request: %s", request.Method, request.URL.Path)
+		next.ServeHTTP(writer, request)
+	})
 }
