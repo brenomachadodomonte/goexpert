@@ -27,3 +27,4 @@ Content-Type: application/json
 
 ### GET ALL PRODUCTS
 GET http://localhost:8000/products?page=1&limit=10&sort=desc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU0MDYzMjEsInN1YiI6IjBkMjc2MzI3LThiOTQtNDQwMy05MzY2LTA4ZTg0OWY4M2RlYiJ9.-nON9ChRvKmpmfS-m6tHQMHW6YchZ46oD1bCbG67OXc

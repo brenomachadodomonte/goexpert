@@ -33,14 +33,11 @@ func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	//payload := map[string]interface{}{
-	//	"sub": u.ID.String(),
-	//	"exp": time.Now().Add(time.Second * time.Duration(h.JwtExpiresIn)).Unix(),
-	//}
-	_, token, err := h.Jwt.Encode(map[string]interface{}{
+	payload := map[string]interface{}{
 		"sub": u.ID.String(),
 		"exp": time.Now().Add(time.Second * time.Duration(h.JwtExpiresIn)).Unix(),
-	})
+	}
+	_, token, err := h.Jwt.Encode(payload)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
