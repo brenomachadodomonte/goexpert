@@ -92,16 +92,33 @@ func (h *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(product)
 }
 
+// UpdateProduct godoc
+// @Summary      Update a product
+// @Description  Update a product
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        id        	path      string                  true  "product ID" Format(uuid)
+// @Param        request     body      dto.CreateProductInput  true  "product request"
+// @Success      200
+// @Failure      404
+// @Failure      500       {object}  Error
+// @Router       /products/{id} [put]
+// @Security ApiKeyAuth
 func (h *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
+		responseError := Error{Message: "id is required"}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	_, err := h.ProductDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
@@ -109,40 +126,64 @@ func (h *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&product)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	product.ID, err = entityPkg.ParseID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	err = h.ProductDB.Update(&product)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
+// DeleteProduct godoc
+// @Summary      Delete a product
+// @Description  Delete a product
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        id        path      string                  true  "product ID" Format(uuid)
+// @Success      200
+// @Failure      404
+// @Failure      500       {object}  Error
+// @Router       /products/{id} [delete]
+// @Security ApiKeyAuth
 func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
+		responseError := Error{Message: "id is required"}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	_, err := h.ProductDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	err = h.ProductDB.Delete(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
