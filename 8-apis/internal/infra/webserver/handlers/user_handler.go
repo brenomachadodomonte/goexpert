@@ -22,6 +22,17 @@ func NewUserHandler(userDB database.UserDB) *UserHandler {
 	return &UserHandler{UserDB: userDB}
 }
 
+// GetJWT godoc
+// @Summary      Get a user JWT
+// @Description  Get a user JWT
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        request   body     dto.GetJWTInput  true  "user credentials"
+// @Success      200  {object}  dto.GetJWTOutput
+// @Failure      404  {object}  Error
+// @Failure      500  {object}  Error
+// @Router       /users/generate_token [post]
 func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 	jwt := r.Context().Value("jwt").(*jwtauth.JWTAuth)
 	jwtExpiresIn := r.Context().Value("jwtExpiresIn").(int)
@@ -34,7 +45,9 @@ func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 
 	u, err := h.UserDB.FindByEmail(user.Email)
 	if err != nil || !u.ValidatePassword(user.Password) {
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusNotFound)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 	payload := map[string]interface{}{
@@ -44,13 +57,11 @@ func (h *UserHandler) GetJWT(w http.ResponseWriter, r *http.Request) {
 	_, token, err := jwt.Encode(payload)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
-	accessToken := struct {
-		AccessToken string `json:"access_token"`
-	}{
-		AccessToken: token,
-	}
+	accessToken := dto.GetJWTOutput{AccessToken: token}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(accessToken)
