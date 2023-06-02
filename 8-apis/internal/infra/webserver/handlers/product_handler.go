@@ -21,22 +21,39 @@ func NewProductHandler(db database.ProductInterface) *ProductHandler {
 	}
 }
 
+// CreateProduct godoc
+// @Summary      Create product
+// @Description  Create products
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        request     body      dto.CreateProductInput  true  "product request"
+// @Success      201
+// @Failure      500         {object}  Error
+// @Router       /products [post]
+// @Security ApiKeyAuth
 func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	var productInput dto.CreateProductInput
 	err := json.NewDecoder(r.Body).Decode(&productInput)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 	product, err := entity.NewProduct(productInput.Name, productInput.Price)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
 	err = h.ProductDB.Create(product)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
@@ -116,6 +133,19 @@ func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// GetProducts   godoc
+// @Summary      List products
+// @Description  get all products
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        page      query     string  false  "page number"
+// @Param        limit     query     string  false  "limit"
+// @Success      200       {array}   entity.Product
+// @Failure      404       {object}  Error
+// @Failure      500       {object}  Error
+// @Router       /products [get]
+// @Security ApiKeyAuth
 func (h *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	pageStr := r.URL.Query().Get("page")
 	limitStr := r.URL.Query().Get("limit")
@@ -134,6 +164,8 @@ func (h *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	products, err := h.ProductDB.FindAll(page, limit, sort)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		responseError := Error{Message: err.Error()}
+		json.NewEncoder(w).Encode(responseError)
 		return
 	}
 
