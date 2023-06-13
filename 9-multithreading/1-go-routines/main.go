@@ -16,8 +16,17 @@ func task(name string) {
 func main() {
 	// Thread 2
 	go task("A")
+
 	// Thread 3
 	go task("B")
+
+	// Thread 4
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Printf("%d: Task %s is running\n", i, "Anonymous")
+			time.Sleep(1 * time.Second)
+		}
+	}()
 
 	time.Sleep(15 * time.Second)
 }
