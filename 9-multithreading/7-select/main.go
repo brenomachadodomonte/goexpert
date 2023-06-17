@@ -15,8 +15,8 @@ func main() {
 	c2 := make(chan Message)
 	var i int64 = 0
 	go func() {
-		atomic.AddInt64(&i, 1)
 		for {
+			atomic.AddInt64(&i, 1)
 			time.Sleep(time.Second * 1)
 			msg := Message{ID: i, Msg: "Hello from RabbitMQ"}
 			c1 <- msg
@@ -24,8 +24,8 @@ func main() {
 	}()
 
 	go func() {
-		atomic.AddInt64(&i, 1)
 		for {
+			atomic.AddInt64(&i, 1)
 			time.Sleep(time.Second * 2)
 			msg := Message{ID: i, Msg: "Hello from Kafka"}
 			c2 <- msg
