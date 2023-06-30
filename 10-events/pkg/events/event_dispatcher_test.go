@@ -154,13 +154,22 @@ func (suite *EventDispatcherTestSuite) TestEventDispatcher_Dispatch() {
 	eh := &MockHandler{}
 	eh.On("Handle", &suite.event)
 
+	eh2 := &MockHandler{}
+	eh2.On("Handle", &suite.event)
+
 	err := suite.eventDispatcher.Register(suite.event.GetName(), eh)
+	assert.Nil(suite.T(), err)
+
+	err = suite.eventDispatcher.Register(suite.event.GetName(), eh2)
 	assert.Nil(suite.T(), err)
 
 	err = suite.eventDispatcher.Dispatch(&suite.event)
 	assert.Nil(suite.T(), err)
 	eh.AssertExpectations(suite.T())
+	eh2.AssertExpectations(suite.T())
+
 	eh.AssertNumberOfCalls(suite.T(), "Handle", 1)
+	eh2.AssertNumberOfCalls(suite.T(), "Handle", 1)
 
 }
 
