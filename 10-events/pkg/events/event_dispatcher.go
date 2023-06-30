@@ -22,6 +22,19 @@ func (ed *EventDispatcher) Dispatch(event EventInterface) error {
 	return nil
 }
 
+func (ed *EventDispatcher) Remove(eventName string, handler EventHandlerInterface) error {
+	if handlers, ok := ed.handlers[eventName]; ok {
+		for i, h := range handlers {
+			if h == handler {
+				ed.handlers[eventName] = append(ed.handlers[eventName][:i], ed.handlers[eventName][i+1:]...)
+				return nil
+			}
+		}
+	}
+
+	return nil
+}
+
 func (ed *EventDispatcher) Register(eventName string, handler EventHandlerInterface) error {
 	if _, ok := ed.handlers[eventName]; ok {
 		for _, h := range ed.handlers[eventName] {
