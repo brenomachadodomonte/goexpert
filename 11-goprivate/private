@@ -1,0 +1,4 @@
+go mod vendor
+install all packages in your project
+
+to install private packages you must be logged in on github or bitbucket
