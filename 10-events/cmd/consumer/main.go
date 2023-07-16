@@ -15,7 +15,7 @@ func main() {
 	defer ch.Close()
 
 	msgs := make(chan amqp.Delivery)
-	go rabbitmq.Consume(ch, msgs)
+	go rabbitmq.Consume(ch, msgs, "myqueue")
 	for msg := range msgs {
 		fmt.Println(string(msg.Body))
 		err := msg.Ack(false)
