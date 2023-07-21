@@ -1,0 +1,10 @@
+GET http://localhost:8000
+
+### Create new person
+POST http://localhost:8000
+Content-Type: application/json
+
+{
+  "name": "Breno",
+  "age": 30
+}
