@@ -16,7 +16,8 @@ import (
 const defaultPort = "8080"
 
 func main() {
-	//create table category (id string, name string, description string)
+	// create table categories (id string, name string, description string)
+	// create table courses (id string, name string, description string, category_id string)
 	db, err := sql.Open("sqlite3", "./data.db")
 	if err != nil {
 		panic(err)
@@ -24,6 +25,7 @@ func main() {
 	defer db.Close()
 
 	categoryDb := database.NewCategory(db)
+	courseDb := database.NewCourse(db)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -32,6 +34,7 @@ func main() {
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		CategoryDB: categoryDb,
+		CourseDB:   courseDb,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
