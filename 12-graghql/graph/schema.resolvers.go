@@ -18,10 +18,12 @@ func (r *categoryResolver) Courses(ctx context.Context, obj *model.Category) ([]
 
 	var modelCourses []*model.Course
 	for _, c := range courses {
+		var desc string
+		desc = c.Description
 		modelCourses = append(modelCourses, &model.Course{
 			ID:          c.ID,
 			Name:        c.Name,
-			Description: &c.Description,
+			Description: &desc,
 		})
 	}
 
@@ -79,10 +81,12 @@ func (r *queryResolver) Categories(ctx context.Context) ([]*model.Category, erro
 
 	var modelCategories []*model.Category
 	for _, c := range categories {
+		var desc string
+		desc = c.Description
 		modelCategories = append(modelCategories, &model.Category{
 			ID:          c.ID,
 			Name:        c.Name,
-			Description: &c.Description,
+			Description: &desc,
 		})
 	}
 	return modelCategories, nil
@@ -97,10 +101,12 @@ func (r *queryResolver) Courses(ctx context.Context) ([]*model.Course, error) {
 
 	var modelCourses []*model.Course
 	for _, c := range courses {
+		var desc string
+		desc = c.Description
 		modelCourses = append(modelCourses, &model.Course{
 			ID:          c.ID,
 			Name:        c.Name,
-			Description: &c.Description,
+			Description: &desc,
 		})
 	}
 
