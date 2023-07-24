@@ -1,40 +1,44 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
+	"github.com/redis/go-redis/v9"
 	"net/http"
+	"time"
 )
 
 var ErrEmpty string = "redis: nil"
 
 func main() {
-	//client := redis.NewClient(&redis.Options{
-	//	Addr:     "localhost:6379",
-	//	Password: "secret",
-	//	DB:       0,
-	//})
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "secret",
+		DB:       0,
+	})
 
 	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/gomysql")
 	if err != nil {
 		panic(err)
 	}
 
-	//ctx := context.Background()
-	//client.Set(ctx, "nome", "Breno", 50*time.Second)
-	//
-	//value, err := client.Get(ctx, "nome").Result()
-	//if err != nil {
-	//	if err.Error() == ErrEmpty {
-	//		println("Variável vazia")
-	//	}
-	//	panic(err)
-	//}
-	//
-	//client.Del(ctx, "nome")
-	//fmt.Println(value)
+	ctx := context.Background()
+	client.Set(ctx, "nome", "Breno", 50*time.Second)
+
+	value, err := client.Get(ctx, "nome").Result()
+	if err != nil {
+		if err.Error() == ErrEmpty {
+			println("Variável vazia")
+		}
+		panic(err)
+	}
+
+	client.Del(ctx, "nome")
+	fmt.Println(value)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
