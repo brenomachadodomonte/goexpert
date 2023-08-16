@@ -76,7 +76,11 @@ func main() {
 
 func LogRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		log.Printf("Method: %s, Request: %s", request.Method, request.URL.Path)
+		log.Printf("%s %s%s from %s",
+			request.Method,
+			request.Host,
+			request.URL.RequestURI(),
+			request.RemoteAddr)
 		next.ServeHTTP(writer, request)
 	})
 }
