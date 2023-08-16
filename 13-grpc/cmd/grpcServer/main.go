@@ -8,6 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"log"
 	"net"
 )
 
@@ -34,7 +35,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	log.Println("gRPC Server running on port 50051")
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		panic(err)
