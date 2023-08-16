@@ -36,8 +36,5 @@ func main() {
 		panic(err)
 	}
 	log.Println("gRPC Server running on port 50051")
-	err = grpcServer.Serve(lis)
-	if err != nil {
-		panic(err)
-	}
+	log.Fatal(grpcServer.Serve(lis))
 }
