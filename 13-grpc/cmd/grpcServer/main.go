@@ -18,6 +18,11 @@ func main() {
 	}
 	defer db.Close()
 
+	err = database.Migrate(db)
+	if err != nil {
+		panic(err)
+	}
+
 	categoryDb := database.NewCategory(db)
 	categoryService := service.NewCategoryService(*categoryDb)
 
