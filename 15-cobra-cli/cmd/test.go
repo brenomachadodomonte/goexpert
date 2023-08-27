@@ -23,6 +23,12 @@ to quickly create a Cobra application.`,
 		command, _ := cmd.Flags().GetString("command")
 		fmt.Println(command)
 	},
+	PreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println("PRE RUN")
+	},
+	PostRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println("POST RUN")
+	},
 }
 
 func init() {
