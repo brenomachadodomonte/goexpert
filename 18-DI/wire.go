@@ -5,8 +5,8 @@ package main
 
 import (
 	"database/sql"
+	"github.com/brenomachadodomonte/goexpert/di/product"
 
-	"github.com/devfullcycle/19-DI/product"
 	"github.com/google/wire"
 )
 

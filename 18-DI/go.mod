@@ -1,4 +1,4 @@
-module github.com/devfullcycle/19-DI
+module github.com/brenomachadodomonte/goexpert/di
 
 go 1.19
 

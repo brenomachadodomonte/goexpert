@@ -8,7 +8,7 @@ package main
 
 import (
 	"database/sql"
-	"github.com/devfullcycle/19-DI/product"
+	"github.com/brenomachadodomonte/goexpert/di/product"
 	"github.com/google/wire"
 )
 
