@@ -1,0 +1,49 @@
+syntax = "proto3";
+package pb;
+option go_package = "pkg/pb";
+
+message GetDistanceInput {
+  string origin = 1;
+  string destination = 2; //optional
+}
+
+message GetDistanceOutput {
+  int64 distance = 1;
+}
+
+service DistanceService {
+  rpc GetDistance(GetDistanceInput) returns (GetDistanceOutput){}
+}
+
+// protoc --go_out=. --go-grpc_out=. pkg/proto/distance.proto
+// go mod tidy
+
+// implementar interface do arquivo: distance_grpc: DistanceServiceClient
+// add no service: pb.UnimplementedDistanceServiceServer
+
+// Criar server: grpcServer := grpc.NewServer()
+// Registrar Service: pb.RegisterDistanceServiceServer(grpcServer, distanceService)
+// Criar um Listener: lis, err := net.Listen("tcp", ":50051")
+// Iniciar Server: err = grpcServer.Serve(lis)
+
+// Usar Reflection para o Evans conseguir rodar: reflection.Register(grpcServer)
+
+/*
+# connect
+evans -r repl
+
+# show packages
+show package
+
+# select package
+package pb
+
+# select service
+service CategoryService
+
+# call
+call CreateCategory
+ */
+
+// CLI Nativo: for _, cep := range os.Args[1:] {
+// AIR:

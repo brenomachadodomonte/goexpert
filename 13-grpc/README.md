@@ -7,6 +7,9 @@ protoc --go_out=. --go-grpc_out=. proto/course_category.proto
 ### Evans
 
 ```shell
+#install
+go install github.com/ktr0731/evans@latest
+
 # connect
 evans -r repl
 
