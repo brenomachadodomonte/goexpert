@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/valyala/fastjson"
+	"slices"
 )
 
 func main() {
@@ -38,4 +39,45 @@ func main() {
 
 	fmt.Printf("JSON: %s\n", user.String())
 
+	arrayString := [][]string{
+		{"a", "b", "c"},
+		{"d", "e", "a"},
+		{"g", "o", "i"},
+	}
+
+	fmt.Println(CheckVowelMatrix(arrayString))
+}
+
+func CheckVowelMatrix(matrix [][]string) string {
+	for i := 0; i < (len(matrix) - 1); i++ {
+		line := matrix[i]
+		for j := 0; j < (len(line) - 1); j++ {
+			isFirstVowel := isVowel(line[j])
+
+			if isFirstVowel {
+				isSecondLetterAVowel := isVowel(matrix[i][j+1])
+				if !isSecondLetterAVowel {
+					continue
+				}
+
+				isThirdLetterAVowel := isVowel(matrix[i+1][j])
+				if !isThirdLetterAVowel {
+					continue
+				}
+
+				if isVowel(matrix[i+1][j+1]) {
+					return fmt.Sprintf("%d-%d", i, j)
+				}
+			}
+		}
+	}
+	return "not found"
+}
+
+func isVowel(letter string) bool {
+	vowels := []string{
+		"a", "e", "i", "o", "u",
+	}
+
+	return slices.Contains(vowels, letter)
 }
