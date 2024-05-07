@@ -14,6 +14,7 @@ func TestCalculateTax(t *testing.T) {
 	}
 }
 
+// go test -cover
 // test coverage cmd: go test -coverprofile=coverage.out
 // generate html coverage: go tool cover -html=coverage.out
 func TestCalculateTaxBatch(t *testing.T) {
